@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Role;
 import models.User;
 import services.AccountService;
 
@@ -51,8 +52,11 @@ public class LoginServlet extends HttpServlet {
 
         AccountService as = new AccountService();
         User user = null;
+        Role role = null;
         try {
             user = as.login(email, password);
+            // grab the role
+            role = user.getRole();
         } catch (Exception ex) {
 
         }
@@ -62,6 +66,8 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         session.setAttribute("email", email);
+        // set the role
+        session.setAttribute("role", role);
         response.sendRedirect("users");
     }
 
